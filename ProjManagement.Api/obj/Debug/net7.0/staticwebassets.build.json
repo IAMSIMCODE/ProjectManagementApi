@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "8jDff7p0lXHzg/ACqxdzGOaIzoIH1MEP1zC3FhL8BLI=",
+  "Source": "ProjManagement.Api",
+  "BasePath": "_content/ProjManagement.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

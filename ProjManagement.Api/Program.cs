@@ -17,6 +17,9 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connect
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+//Injecting the MediatR into my DI
+builder.Services.AddMediatR(conf  => conf.RegisterServicesFromAssemblies(typeof(Program).Assembly));
    
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

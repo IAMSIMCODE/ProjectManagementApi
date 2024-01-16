@@ -3,14 +3,15 @@ using DataService.Repositories.Interfaces;
 using Entities.DbSet;
 using Entities.Dtos.Request;
 using Entities.Dtos.Response;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ProjManagement.Api.Controllers
 {
     public class AchievementController : BaseController
     {
-        public AchievementController(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor contextAccessor) 
-            : base(unitOfWork, mapper, contextAccessor)
+        public AchievementController(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor contextAccessor, IMediator mediator) 
+            : base(unitOfWork, mapper, contextAccessor, mediator)
         {
         }
 

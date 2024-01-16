@@ -1,27 +1,29 @@
 ﻿using AutoMapper;
 using DataService.Repositories.Interfaces;
-using Entities.DbSet;
 using Entities.Dtos.Request;
-using Entities.Dtos.Response;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProjManagement.Api.Commands;
+using ProjManagement.Api.Queries;
 using System.Net;
 
 namespace ProjManagement.Api.Controllers
 {
     public class DeveloperController : BaseController
     {
-        public DeveloperController(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor contextAccessor) 
-            : base(unitOfWork, mapper, contextAccessor)
+        public DeveloperController(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor contextAccessor, IMediator mediator)
+            : base(unitOfWork, mapper, contextAccessor, mediator)
         {
+            
         }
 
         [HttpGet]
         public async Task<IActionResult> GetDevelopers()
         {
-            var developers = await _unitOfWork.Developers.GetAll();
+           //Specify the query for this endpoint 
+            var query = new GetAllDevelopersQuery();
 
-            //return Ok(developers);  
-            var result = _mapper.Map<IEnumerable<GetDeveloperResponse>>(developers);
+            var result = await _mediator.Send(query);
             return Ok(result);
         }
 
@@ -29,26 +31,22 @@ namespace ProjManagement.Api.Controllers
         [Route("{developerId:Guid}")]
         public async Task<IActionResult> GetDeveloper(Guid developerId)
         {
-            var developer = await _unitOfWork.Developers.GetById(developerId);
+            var query = new GetDeveloperQuery(developerId);
+            var result = await _mediator.Send(query);
 
-            if (developer == null) { return NotFound(); }
-
-            var result = _mapper.Map<GetDeveloperResponse>(developer);
+            if (result == null) { return NotFound(); }
             return Ok(result);
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> AddDeveloper([FromBody] CreateDeveloperRequest developerRequest)
+        public async Task<IActionResult> AddDeveloper([FromBody] CreateDeveloperRequest developer)
         {
             if (!ModelState.IsValid) { return BadRequest("ModelState not Valid"); }
 
-            var result = _mapper.Map<Developer>(developerRequest);
+            var command = new CreateDeveloperInfoRequest(developer);
+            var result = await _mediator.Send(command);
 
-            await _unitOfWork.Developers.Add(result);
-            await _unitOfWork.CompleteAsync();  
-
-            return CreatedAtAction(nameof(GetDeveloper), new {developerId = result.Id}, result);
+            return CreatedAtAction(nameof(GetDeveloper), new {developerId = result.DeveloperId}, result);
         }
 
         [HttpPut]
@@ -56,27 +54,20 @@ namespace ProjManagement.Api.Controllers
         {
             if (!ModelState.IsValid) { return BadRequest("ModelState not Valid"); }
 
-            var result = _mapper.Map<Developer>(updateDeveloper);
-
-            await _unitOfWork.Developers.Update(result);
-            await _unitOfWork.CompleteAsync();
-
-            return NoContent();
+            var command = new UpdateDeveloperInfoRequest(updateDeveloper);
+            var result = await _mediator.Send(command);
+           
+            return result ? NoContent() : BadRequest();
         }
 
         [HttpDelete]
         [Route("{developerId:guid}")]
         public async Task<IActionResult> DeleteDeveloper(Guid developerId)
         {
-            var developer = await _unitOfWork.Developers.GetById(developerId);
-            
-            if (developer == null) 
-                return NotFound();
+            var command = new DeleteDeveloperInfoRequest(developerId);
+            var result = await _mediator.Send(command);
 
-            await _unitOfWork.Developers.Delete(developerId);
-            await _unitOfWork.CompleteAsync();
-
-            return NoContent();
+            return result ? NoContent() : BadRequest();
         }
 
         [HttpGet]

@@ -148,3 +148,4 @@ C:\Users\Simeon Agboegbulem\source\repos\PlayGround\ProjectManagement\ProjManage
 C:\Users\Simeon Agboegbulem\source\repos\PlayGround\ProjectManagement\ProjManagement.Api\obj\Debug\net7.0\ProjManagement.Api.pdb
 C:\Users\Simeon Agboegbulem\source\repos\PlayGround\ProjectManagement\ProjManagement.Api\obj\Debug\net7.0\ProjManagement.Api.genruntimeconfig.cache
 C:\Users\Simeon Agboegbulem\source\repos\PlayGround\ProjectManagement\ProjManagement.Api\obj\Debug\net7.0\ref\ProjManagement.Api.dll
+C:\Users\Simeon Agboegbulem\source\repos\PlayGround\ProjectManagement\ProjManagement.Api\obj\Debug\net7.0\ProjManagement.Api.sourcelink.json

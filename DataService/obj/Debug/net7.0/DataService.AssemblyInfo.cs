@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DataService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+984c0f46fa97467dd1a46389755c7cad8b9d8d91")]
 [assembly: System.Reflection.AssemblyProductAttribute("DataService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DataService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

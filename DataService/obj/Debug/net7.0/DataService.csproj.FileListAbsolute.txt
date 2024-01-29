@@ -32,3 +32,4 @@ C:\Users\Simeon Agboegbulem\source\repos\PlayGround\ProjectManagement\DataServic
 C:\Users\Simeon Agboegbulem\source\repos\PlayGround\ProjectManagement\DataService\obj\Debug\net7.0\DataService.pdb
 C:\Users\Simeon Agboegbulem\source\repos\PlayGround\ProjectManagement\DataService\obj\Debug\net7.0\DataService.genruntimeconfig.cache
 C:\Users\Simeon Agboegbulem\source\repos\PlayGround\ProjectManagement\DataService\obj\Debug\net7.0\ref\DataService.dll
+C:\Users\Simeon Agboegbulem\source\repos\PlayGround\ProjectManagement\DataService\obj\Debug\net7.0\DataService.sourcelink.json

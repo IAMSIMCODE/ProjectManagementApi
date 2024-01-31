@@ -1,15 +1,18 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using DataService.Repositories.Interfaces;
 using Entities.DbSet;
 using Entities.Dtos.Request;
 using Entities.Dtos.Response;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ProjManagement.Api.Controllers
+namespace ProjManagement.Api.Controllers.V2
 {
+    [ApiVersion(2)]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class AchievementController : BaseController
     {
-        public AchievementController(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor contextAccessor) 
+        public AchievementController(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor contextAccessor)
             : base(unitOfWork, mapper, contextAccessor)
         {
         }

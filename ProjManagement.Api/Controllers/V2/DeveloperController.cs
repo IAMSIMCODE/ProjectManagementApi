@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using DataService.Repositories.Interfaces;
 using Entities.DbSet;
 using Entities.Dtos.Request;
@@ -6,11 +7,13 @@ using Entities.Dtos.Response;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace ProjManagement.Api.Controllers
+namespace ProjManagement.Api.Controllers.V2
 {
+    [ApiVersion(2)]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class DeveloperController : BaseController
     {
-        public DeveloperController(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor contextAccessor) 
+        public DeveloperController(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor contextAccessor)
             : base(unitOfWork, mapper, contextAccessor)
         {
         }
@@ -46,9 +49,9 @@ namespace ProjManagement.Api.Controllers
             var result = _mapper.Map<Developer>(developerRequest);
 
             await _unitOfWork.Developers.Add(result);
-            await _unitOfWork.CompleteAsync();  
+            await _unitOfWork.CompleteAsync();
 
-            return CreatedAtAction(nameof(GetDeveloper), new {developerId = result.Id}, result);
+            return CreatedAtAction(nameof(GetDeveloper), new { developerId = result.Id }, result);
         }
 
         [HttpPut]
@@ -69,8 +72,8 @@ namespace ProjManagement.Api.Controllers
         public async Task<IActionResult> DeleteDeveloper(Guid developerId)
         {
             var developer = await _unitOfWork.Developers.GetById(developerId);
-            
-            if (developer == null) 
+
+            if (developer == null)
                 return NotFound();
 
             await _unitOfWork.Developers.Delete(developerId);
@@ -90,7 +93,7 @@ namespace ProjManagement.Api.Controllers
             if (ipAddress == null) { return BadRequest(); }
 
             // check if the ipaddress is local 
-            
+
             if (ipAddress == "::1" || ipAddress == "0.0.0.1")
             {
                 ipAddress = Dns.GetHostEntry(Dns.GetHostName()).AddressList[1].ToString();

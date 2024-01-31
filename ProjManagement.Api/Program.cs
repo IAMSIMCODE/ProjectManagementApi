@@ -1,9 +1,13 @@
+using Asp.Versioning;
 using DataService.Data;
 using DataService.Repositories;
 using DataService.Repositories.Interfaces;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using ProjManagement.Api.MappingProfile;
+using ProjManagement.Api.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +25,29 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+//Swagger Versioning Configuration 
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.OperationFilter<SwaggerDefaultValues>();
+});
+
+//Configure Versioning 
+builder.Services.AddApiVersioning(opt =>
+{
+    opt.AssumeDefaultVersionWhenUnspecified = true;
+    opt.DefaultApiVersion = ApiVersion.Default; // OR new ApiVersion(1, 0); Either options work 
+    opt.ReportApiVersions = true;
+    opt.ApiVersionReader = ApiVersionReader.Combine(
+        new QueryStringApiVersionReader("api-version"),
+        new HeaderApiVersionReader("api-version"),
+        new UrlSegmentApiVersionReader());
+}).AddApiExplorer(option =>
+{
+    option.GroupNameFormat = "'v'V";
+    option.SubstituteApiVersionInUrl = true;
+});
 
 //This configuration is to get IP ADDRESS using FORWARD HEADER
 builder.Services.Configure<ForwardedHeadersOptions>(opt =>
@@ -36,7 +62,18 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(opt =>
+    {
+        var descriptions = app.DescribeApiVersions();
+
+        //Build a Swagger enpoint for each discovered Api Version
+        foreach (var description in descriptions)
+        {
+            var url = $"/swagger/{description.GroupName}/swagger.json";
+            var name = description.GroupName.ToUpperInvariant();
+            opt.SwaggerEndpoint(url, name);
+        }
+    });
 }
 
 //I Added this to be able to use forward header

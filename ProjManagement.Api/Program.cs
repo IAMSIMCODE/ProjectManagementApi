@@ -5,6 +5,7 @@ using DataService.Repositories.Interfaces;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using ProjManagement.Api.Configurations;
 using ProjManagement.Api.MappingProfile;
 using ProjManagement.Api.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -58,6 +59,10 @@ builder.Services.Configure<ForwardedHeadersOptions>(opt =>
 });
 
 
+//Initialise Global Error
+builder.Services.AddExceptionHandler<GlobalErrorHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -85,6 +90,8 @@ app.UseForwardedHeaders();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseExceptionHandler();
 
 app.MapControllers();
 

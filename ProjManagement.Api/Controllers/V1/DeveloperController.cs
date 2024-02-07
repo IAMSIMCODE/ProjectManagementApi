@@ -21,6 +21,8 @@ namespace ProjManagement.Api.Controllers.V1
         [HttpGet]
         public async Task<IActionResult> GetDevelopers()
         {
+          
+            
             var developers = await _unitOfWork.Developers.GetAll();
 
             //return Ok(developers);  

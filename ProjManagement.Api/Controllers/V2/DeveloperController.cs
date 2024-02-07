@@ -21,6 +21,7 @@ namespace ProjManagement.Api.Controllers.V2
         [HttpGet]
         public async Task<IActionResult> GetDevelopers()
         {
+            throw new NotImplementedException();
             var developers = await _unitOfWork.Developers.GetAll();
 
             //return Ok(developers);  
